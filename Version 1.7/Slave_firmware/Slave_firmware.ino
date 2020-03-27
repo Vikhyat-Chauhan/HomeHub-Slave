@@ -113,7 +113,6 @@ SLAVE slave;
 
 void setup() {
   Serial.begin(115200);         // start serial for debug
-  Serial.flush();
   //Timer for bluetooth data
   structure_initilizer(); //Should be above all slave structure using functions : read_saved_values(),
   lastsaveddata_initilizer();
@@ -167,14 +166,14 @@ void master_output_handler(){
       JsonObject sensor_x = sensor.createNestedObject();
       sensor_x["TYPE"] = slave.sensor[i].type;
       sensor_x["VALUE"] = slave.sensor[i].current_value;
-    }
+    }/*
     //All Button Devices here only in handshake, because we dont use them after handshake decleration
     JsonArray button = device.createNestedArray("BUTTON");
     for(int i=0;i<slave.BUTTON_NUMBER;i++){
       JsonObject button_x = button.createNestedObject();
       button_x["TYPE"] = BUTTON_TYPE;
       button_x["STATE"] = false;
-    }
+    }*/
     //Command
     String command = push_command();
     if(command != "NULL"){
@@ -555,7 +554,7 @@ void device_initilizer(){
 }
 
 void interrupt_initilizer(){
-  Timer1.initialize(20);                     //100 - 1000
+  Timer1.initialize(50);                     //100 - 1000
   Timer1.attachInterrupt(serial_json_input_capture);
   MsTimer2::set(100, button_handler); // 500ms period
   MsTimer2::start();
