@@ -143,7 +143,7 @@ void master_output_handler(){
     DynamicJsonDocument doc(capacity);
     doc["NAME"] = "4RELAY"; 
     doc["ROLE"] = "SLAVE";
-    
+    doc["COMMAND"] = "HANDSHAKE";
     JsonObject device = doc.createNestedObject("DEVICE"); 
     
     //All Relay Devices here
@@ -174,11 +174,6 @@ void master_output_handler(){
       button_x["TYPE"] = BUTTON_TYPE;
       button_x["STATE"] = false;
     }*/
-    //Command
-    String command = push_command();
-    if(command != "NULL"){
-      doc["COMMAND"] = command;
-    }
     serializeJson(doc, OUT_DATA_PORT);
     slave.change = false;
     slave.flag.handshake = false;
